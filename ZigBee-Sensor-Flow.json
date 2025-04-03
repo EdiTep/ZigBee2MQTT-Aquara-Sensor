@@ -1,0 +1,329 @@
+[
+    {
+        "id": "59e1941a3b68e077",
+        "type": "group",
+        "z": "4e6fdb9451843a3d",
+        "style": {
+            "stroke": "#999999",
+            "stroke-opacity": "1",
+            "fill": "none",
+            "fill-opacity": "1",
+            "label": true,
+            "label-position": "nw",
+            "color": "#a4a4a4"
+        },
+        "nodes": [
+            "d6070f5350480dbb",
+            "cf468edabe628d0d",
+            "2e1f096ac9e37b56",
+            "66cdc35624062665",
+            "382888c4c7c1315e",
+            "8d8e2ed54aaa2a81",
+            "b968904d4861c3ab",
+            "d76908ac9eaae204",
+            "6ca24693b4fd377e",
+            "80479bbf8f11d3f4",
+            "2abbd3a4ad5102dd",
+            "434f42e55bd0d9f9"
+        ],
+        "x": 34,
+        "y": 19,
+        "w": 1092,
+        "h": 282
+    },
+    {
+        "id": "d6070f5350480dbb",
+        "type": "zigbee2mqtt-in",
+        "z": "4e6fdb9451843a3d",
+        "g": "59e1941a3b68e077",
+        "name": "WC Fenster Sensor",
+        "server": "1bfcccb11dd30d19",
+        "friendly_name": "FensterKontaktWC (MCCGQ11LM)",
+        "device_id": "0x00158d008b117102",
+        "state": "contact",
+        "outputAtStartup": true,
+        "filterChanges": true,
+        "enableMultiple": false,
+        "x": 150,
+        "y": 140,
+        "wires": [
+            [
+                "2e1f096ac9e37b56"
+            ]
+        ]
+    },
+    {
+        "id": "cf468edabe628d0d",
+        "type": "pushover api",
+        "z": "4e6fdb9451843a3d",
+        "g": "59e1941a3b68e077",
+        "keys": "d24db8d2d165ad26",
+        "title": "WC Fenster Meldung",
+        "name": "WC Fenster Meldung",
+        "x": 960,
+        "y": 180,
+        "wires": []
+    },
+    {
+        "id": "2e1f096ac9e37b56",
+        "type": "function",
+        "z": "4e6fdb9451843a3d",
+        "g": "59e1941a3b68e077",
+        "name": "Fenster Zustand auswerten",
+        "func": "if (msg.payload === true || msg.payload === 'true') {\n    return [null, msg]; // Open (true) -> second output\n} else if (msg.payload === false || msg.payload === 'false') {\n    return [msg, null]; // Closed (false) -> first output\n} else {\n    return null; // Ignore other values\n}",
+        "outputs": 2,
+        "timeout": "",
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 380,
+        "y": 140,
+        "wires": [
+            [
+                "b968904d4861c3ab",
+                "6ca24693b4fd377e",
+                "434f42e55bd0d9f9"
+            ],
+            [
+                "b968904d4861c3ab",
+                "434f42e55bd0d9f9"
+            ]
+        ]
+    },
+    {
+        "id": "66cdc35624062665",
+        "type": "comment",
+        "z": "4e6fdb9451843a3d",
+        "g": "59e1941a3b68e077",
+        "name": "ZigBee Fenster im WC Sensor überwachen. Wenn Fenster 3 min. oder weitere 5 min. offen eine Pushover Nachricht schicken. Wenn Akku unter 5% ebenfalls",
+        "info": "",
+        "x": 580,
+        "y": 60,
+        "wires": []
+    },
+    {
+        "id": "382888c4c7c1315e",
+        "type": "zigbee2mqtt-in",
+        "z": "4e6fdb9451843a3d",
+        "g": "59e1941a3b68e077",
+        "name": "WC Fenster Sensor Akku",
+        "server": "1bfcccb11dd30d19",
+        "friendly_name": "FensterKontaktWC (MCCGQ11LM)",
+        "device_id": "0x00158d008b117102",
+        "state": "battery",
+        "outputAtStartup": true,
+        "filterChanges": false,
+        "enableMultiple": false,
+        "x": 170,
+        "y": 240,
+        "wires": [
+            [
+                "8d8e2ed54aaa2a81",
+                "2abbd3a4ad5102dd"
+            ]
+        ]
+    },
+    {
+        "id": "8d8e2ed54aaa2a81",
+        "type": "function",
+        "z": "4e6fdb9451843a3d",
+        "g": "59e1941a3b68e077",
+        "name": "Batteriestand überwachen",
+        "func": "let batteryLevel = msg.payload;\n\n// Prüfe, ob der Batteriestand definiert ist und ≤ 5%\nif (batteryLevel !== undefined && batteryLevel <= 5) {\n    msg.payload = `Warnung: Der Batteriestand des WC-Fenstersensors ist kritisch: ${batteryLevel}%`;\n    return msg;\n} else {\n    // Keine Nachricht senden, wenn der Batteriestand über 5% liegt\n    return null;\n}",
+        "outputs": 1,
+        "timeout": "",
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 660,
+        "y": 260,
+        "wires": [
+            [
+                "cf468edabe628d0d"
+            ]
+        ]
+    },
+    {
+        "id": "b968904d4861c3ab",
+        "type": "function",
+        "z": "4e6fdb9451843a3d",
+        "g": "59e1941a3b68e077",
+        "name": "Fenster offen / zu Timer",
+        "func": "const firstInterval = 3 * 60 * 1000; // 3 Minuten in Millisekunden\nconst secondInterval = 5 * 60 * 1000; // 5 Minuten in Millisekunden\n\n// Lade den letzten Zustand aus dem Kontext (Standard: null)\nconst lastState = context.get('lastState') || null;\n\n// Timer-Objekte initialisieren\nif (!context.firstInterval) context.firstInterval = null;\nif (!context.secondInterval) context.secondInterval = null;\n\nif (msg.payload === false) { // Fenster geöffnet\n    // Nur bei einer Zustandsänderung von geschlossen nach offen ausführen\n    if (lastState !== false) {\n        // Aktualisiere den letzten Zustand\n        context.set('lastState', false);\n\n        // Wenn kein Timer aktiv ist, erstelle einen\n        if (!context.firstInterval && !context.secondInterval) {\n            // Starte den einmaligen Verzögerungstimer für die erste Meldung\n            context.firstInterval = setTimeout(() => {\n                node.send({ payload: 'WC Fenster ist offen!' }); // Erste Nachricht nach 3 Minuten senden\n\n                // Starte wiederholten Timer nach der ersten Meldung\n                context.secondInterval = setInterval(() => {\n                    node.send({ payload: 'WC Fenster ist immer noch offen!' });\n                }, secondInterval);\n            }, firstInterval);\n        }\n    }\n} else if (msg.payload === true) { // Fenster geschlossen\n    // Nur bei einer Zustandsänderung von offen nach geschlossen ausführen\n    if (lastState !== true) {\n        // Aktualisiere den letzten Zustand\n        context.set('lastState', true);\n\n        // Lösche den ersten Verzögerungstimer, falls er noch läuft\n        if (context.firstInterval) {\n            clearTimeout(context.firstInterval);\n            context.firstInterval = null;\n        }\n\n        // Lösche den wiederholten Timer\n        if (context.secondInterval) {\n            clearInterval(context.secondInterval);\n            context.secondInterval = null;\n        }\n\n        // Nachricht senden, dass das Fenster geschlossen wurde\n        node.send({ payload: 'WC Fenster wurde geschlossen' });\n    }\n}\n\nreturn null;\n",
+        "outputs": 1,
+        "timeout": "",
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 670,
+        "y": 140,
+        "wires": [
+            [
+                "cf468edabe628d0d",
+                "d76908ac9eaae204",
+                "80479bbf8f11d3f4"
+            ]
+        ],
+        "info": "const firstInterval = 3 * 60 * 1000; // 3 Minuten in Millisekunden\nconst secondInterval = 5 * 60 * 1000; // 5 Minuten in Millisekunden\n\n// Timer-Objekte initialisieren\nif (!context.firstInterval) {\n    context.firstInterval = null;\n}\nif (!context.secondInterval) {\n    context.secondInterval = null;\n}\n\nif (msg.payload === false) { // Fenster geöffnet\n    // Wenn kein Timer aktiv ist, erstelle einen\n    if (!context.firstInterval && !context.secondInterval) {\n        // Starte den einmaligen Verzögerungstimer für die erste Meldung\n        context.firstInterval = setTimeout(() => {\n            node.send({ payload: 'Fenster ist offen!' }); // Erste Nachricht nach 3 Minuten senden\n\n            // Starte wiederholten Timer nach der ersten Meldung\n            context.secondInterval = setInterval(() => {\n                node.send({ payload: 'Fenster ist immer noch offen!' });\n            }, secondInterval);\n        }, firstInterval);\n    }\n} else if (msg.payload === true) { // Fenster geschlossen\n    // Lösche den ersten Verzögerungstimer, falls er noch läuft\n    if (context.firstInterval) {\n        clearTimeout(context.firstInterval);\n        context.firstInterval = null;\n    }\n\n    // Lösche den wiederholten Timer\n    if (context.secondInterval) {\n        clearInterval(context.secondInterval);\n        context.secondInterval = null;\n    }\n\n    node.send({ payload: 'Fenster wurde geschlossen' }); // Nachricht für Schließen\n}\n\nreturn null;\n"
+    },
+    {
+        "id": "d76908ac9eaae204",
+        "type": "debug",
+        "z": "4e6fdb9451843a3d",
+        "g": "59e1941a3b68e077",
+        "name": "Fenster auf / zu Meldungen",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": true,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "payload",
+        "statusType": "auto",
+        "x": 660,
+        "y": 200,
+        "wires": []
+    },
+    {
+        "id": "6ca24693b4fd377e",
+        "type": "debug",
+        "z": "4e6fdb9451843a3d",
+        "g": "59e1941a3b68e077",
+        "name": "Fenster Zustand",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 400,
+        "y": 200,
+        "wires": []
+    },
+    {
+        "id": "80479bbf8f11d3f4",
+        "type": "ui_text",
+        "z": "4e6fdb9451843a3d",
+        "g": "59e1941a3b68e077",
+        "group": "507542867a7bb60c",
+        "order": 1,
+        "width": 6,
+        "height": 2,
+        "name": "WC Fenster Zustand",
+        "label": "",
+        "format": "{{msg.payload}}",
+        "layout": "col-center",
+        "className": "",
+        "style": true,
+        "font": "Arial Black,Arial Black,Gadget,sans-serif",
+        "fontSize": "18",
+        "color": "#000000",
+        "x": 960,
+        "y": 140,
+        "wires": []
+    },
+    {
+        "id": "2abbd3a4ad5102dd",
+        "type": "ui_gauge",
+        "z": "4e6fdb9451843a3d",
+        "g": "59e1941a3b68e077",
+        "name": "",
+        "group": "507542867a7bb60c",
+        "order": 3,
+        "width": 3,
+        "height": 3,
+        "gtype": "gage",
+        "title": "Akku Sensor Kapazität",
+        "label": "%",
+        "format": "{{value}} %",
+        "min": 0,
+        "max": "100",
+        "colors": [
+            "#ab3f38",
+            "#e6e600",
+            "#50b232"
+        ],
+        "seg1": "",
+        "seg2": "",
+        "diff": false,
+        "className": "",
+        "x": 960,
+        "y": 220,
+        "wires": []
+    },
+    {
+        "id": "434f42e55bd0d9f9",
+        "type": "ui_led2",
+        "z": "4e6fdb9451843a3d",
+        "g": "59e1941a3b68e077",
+        "order": 2,
+        "group": "507542867a7bb60c",
+        "width": 3,
+        "height": 3,
+        "label": "",
+        "property": "payload",
+        "labelPlacement": "left",
+        "labelAlignment": "left",
+        "colorForValue": [
+            {
+                "color": "#ff0000",
+                "value": "false",
+                "valueType": "bool"
+            },
+            {
+                "color": "#008000",
+                "value": "true",
+                "valueType": "bool"
+            }
+        ],
+        "allowColorForValueInMessage": false,
+        "shape": "circle",
+        "showGlow": true,
+        "name": "WC Fenster LED",
+        "x": 950,
+        "y": 100,
+        "wires": []
+    },
+    {
+        "id": "1bfcccb11dd30d19",
+        "type": "zigbee2mqtt-server",
+        "name": "Sonoff ZigBee Raspi",
+        "host": "Raspi",
+        "mqtt_port": "1883",
+        "mqtt_username": "raspi",
+        "mqtt_password": "Password",
+        "mqtt_qos": "2",
+        "tls": "",
+        "usetls": false,
+        "base_topic": "zigbee2mqtt"
+    },
+    {
+        "id": "d24db8d2d165ad26",
+        "type": "pushover-keys",
+        "name": "Fenster Alarm Pushover (Gruppe)"
+    },
+    {
+        "id": "507542867a7bb60c",
+        "type": "ui_group",
+        "name": "WC Fenster Überwachung",
+        "tab": "b1a7800aebadd728",
+        "order": 1,
+        "disp": true,
+        "width": "6",
+        "collapse": false,
+        "className": ""
+    },
+    {
+        "id": "b1a7800aebadd728",
+        "type": "ui_tab",
+        "name": "ZigBee Geräte Überwachung",
+        "icon": "bug_report",
+        "disabled": false,
+        "hidden": false
+    }
+]
