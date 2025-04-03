@@ -1,7 +1,7 @@
-# ZigBee WC-Fenstersensor - Node-RED Flow
+# ZigBee Fenster- Türsensor Überwachung - Node-RED Flow
 
 ## Überblick
-Dieser Node-RED Flow dient zur Überwachung eines ZigBee-basierten Fenster- Tür-Sensors. Er erfasst den Status des Fensters (geöffnet/geschlossen/Zeit überschritten in geöffnetem Zustand) und den Batteriestand des Sensors. Bei relevanten Zustandsänderungen oder wenn der Kontakt länger als eine einstellbare Zeit geöffnet ist werden Benachrichtigungen per Pushover gesendet.
+Dieser Node-RED Flow dient zur Überwachung eines ZigBee-basierten Fenster- Tür-Sensors. Er erfasst den Status des Fensters / der Tür (geöffnet/geschlossen/Zeit überschritten in geöffnetem Zustand) und den Batteriestand des Sensors. Bei relevanten Zustandsänderungen oder wenn der Kontakt länger als eine einstellbare Zeit geöffnet ist werden Benachrichtigungen per Pushover gesendet.
 
 ## Funktionen
 - **Erfassung des Fensterstatus**: Erkennt, ob das Fenster / Tür geöffnet oder geschlossen wurde.
@@ -15,7 +15,7 @@ Dieser Node-RED Flow dient zur Überwachung eines ZigBee-basierten Fenster- Tür
 - Pushover Account mit Zugangsdaten zur Nutzung der Benachrichtigungsfunktion
 
 ## Installation
-1. Node-RED und ZigBee2MQTT auf dem gewünschten System installieren.
+1. Node-RED mit Dashboard und ZigBee2MQTT auf dem gewünschten System installieren.
 2. Den Flow in Node-RED importieren.
 3. Pushover-Zugangsdaten eintragen.
 4. Flow aktivieren und testen.
