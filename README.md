@@ -1,32 +1,30 @@
 # ZigBee Fenster- Türsensor Überwachung - Node-RED Flow
 
-## Überblick
-Dieser Node-RED Flow dient zur Überwachung eines ZigBee-basierten Fenster- Tür-Sensors. Er erfasst den Status des Fensters / der Tür (geöffnet/geschlossen/Zeit überschritten in geöffnetem Zustand) und den Batteriestand des Sensors. Bei relevanten Zustandsänderungen oder wenn der Kontakt länger als eine einstellbare Zeit geöffnet ist werden Benachrichtigungen per Pushover gesendet.
+## Overview
+This Node-RED flow is designed to monitor a ZigBee-based WC (restroom) window sensor. It detects the window status (open/closed) and monitors the sensor's battery level. Relevant state changes trigger Pushover notifications.
 
-## Funktionen
-- **Erfassung des Fensterstatus**: Erkennt, ob das Fenster / Tür geöffnet oder geschlossen wurde.
-- **Batteriestatus-Check**: Überwacht den Batteriestand des Sensors.
-- **Benachrichtigungssystem**: Sendet Pushover-Benachrichtigungen, wenn das Fenster / Tür geöffnet wird oder der Batteriestand niedrig ist und wenn der Kontakt länger als eine einstellbare Zeit geöffnet ist.
+## Features
+Window Status Detection: Identifies whether the window is open or closed.
+Battery Status Monitoring: Keeps track of the sensor's battery level.
+Notification System: Sends Pushover notifications when the window is opened or the battery level is low.
 
-## Anforderungen
-- Node-RED installiert
-- ZigBee2MQTT installiert mit Koordinator
-- ZigBee-Sensor kompatibel mit ZigBee2MQTT und Node-RED
-- Pushover Account mit Zugangsdaten zur Nutzung der Benachrichtigungsfunktion
+## Requirements
+Node-RED installed
+ZigBee sensor compatible with Node-RED
+Pushover credentials to use the notification feature
 
 ## Installation
-1. Node-RED mit Dashboard und ZigBee2MQTT auf dem gewünschten System installieren.
-2. Den Flow in Node-RED importieren.
-3. Pushover-Zugangsdaten eintragen.
-4. Flow aktivieren und testen.
+Install Node-RED on your desired system.
+Import the flow into Node-RED.
+Enter your Pushover credentials.
+Activate and test the flow.
 
-## Nutzung
-- Der Flow läuft automatisch im Hintergrund und überwacht den Sensor.
-- Falls das Fenster / Tür geöffnet / geschlossen wird oder die Batterie schwach ist und wenn der Kontakt länger als eine einstellbare Zeit geöffnet ist, erfolgt eine Push-Benachrichtigung.
+## Usage
+The flow runs automatically in the background and monitors the sensor.
+A push notification is sent if the window is opened or the battery is low.
 
-## Lizenz
-Dieses Projekt steht unter der GNU GENERAL PUBLIC LICENSE.
+## License
+This project is licensed under the MIT License.
 
-## Kontakt
-Bei Fragen oder Verbesserungen gerne ein Issue auf GitHub erstellen oder einen Pull Request einreichen.
-
+## Contact
+For questions or improvements, feel free to open an issue on GitHub or submit a pull request.
