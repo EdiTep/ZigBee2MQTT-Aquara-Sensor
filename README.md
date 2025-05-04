@@ -1,4 +1,4 @@
-# ZigBee Fenster- Türsensor Überwachung - Node-RED Flow
+# ZigBee Fenster- Türsensor Überwachung  Node-RED Flow
 
 ## Overview
 This Node-RED flow is designed to monitor a ZigBee-based WC (restroom) window sensor. It detects the window status (open/closed) and monitors the sensor's battery level. Relevant state changes trigger Pushover notifications.
