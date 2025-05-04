@@ -6,7 +6,7 @@ This Node-RED flow is designed to monitor a ZigBee-based Door- Window-Sensor. It
 ## Features
 Window Status Detection: Identifies whether the window is open or closed.  
 Battery Status Monitoring: Keeps track of the sensor's battery level.  
-Notification System: Sends Pushover notifications when the window is opened (for a variable time) or the battery level is low.  
+Notification System: Sends Pushover notifications when the window is opened, again if it is open for a adjustable time (so that you don´t forget to close the Window, Door) and if the battery level is low.  
 
 ## Requirements
 My Installation based on an Raspi 4B 8 GB RAM:  
@@ -17,7 +17,7 @@ ZigBee sensor compatible with Node-RED
 Pushover Account with credentials to use the notification feature
 
 ## Installation
-Verify that the above Requirements are given.    
+Verify that the above Requirements are met.    
 Import the flow into Node-RED.  
 Make corrections in your Nodes for your System:  
 Configure your ZigBee2MQTT Nodes, enter your Pushover credentials.  
@@ -25,7 +25,7 @@ Activate and test the flow.
 
 ## Usage
 The flow runs automatically in the background and monitors the sensor.  
-A push notification is sent if the window is opened or if it is opened for a variable time or the battery is low.
+A push notification is sent if the window is opened or if it is opened for a adjustable time or the battery is low.
 
 ## License
 This project is licensed under the MIT License.
