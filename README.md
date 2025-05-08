@@ -12,7 +12,7 @@ Notification System: Sends Pushover notifications when the window is opened, aga
 My Installation based on an Raspi 4B 8 GB RAM:  
 Node-RED installed, Mosquitto installed, ZigBeee2MQTT installed  
 (with a [[Sonoff ZigBee 3.0 USB Dongle Plus](https://www.zigbee2mqtt.io/devices/ZBDongle-E.html)] or a [[SLZB-06M Adapter](https://smlight.tech/manual/slzb-06/guide/getting-started/)] via LAN PoE)  
-ZigBee sensor compatible with Node-RED ([[Aqara MCCGQ11LM](https://www.zigbee2mqtt.io/devices/MCCGQ11LM.html)])  
+ZigBee sensor compatible with Node-RED (i use this one: [[Aqara MCCGQ11LM](https://www.zigbee2mqtt.io/devices/MCCGQ11LM.html)])  
 Pushover Account with credentials to use the notification feature
 
 ## Installation
