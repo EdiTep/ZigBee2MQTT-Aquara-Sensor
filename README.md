@@ -1,3 +1,7 @@
+<p align="center">
+  <img src="pictures/Edis-Blog-IoT-Logo.png" alt="Logo edi.teppert.com Blog" width="600"/>
+</p>  
+
 # ZigBee Window- Doorsensor Monitoring - Node-RED Flow
 
 ## Overview
