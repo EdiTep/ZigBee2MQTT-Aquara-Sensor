@@ -8,7 +8,7 @@
 This Node-RED flow is designed to monitor a ZigBee-based Door- Window-Sensor. It detects the window status (open/closed) and monitors the sensor's battery level. Relevant state changes trigger Pushover notifications.
 
 <p align="center">
-  <img src="pictures/ZigBee2MQTT-Aquara-Sensor-Flow.jpg" alt="Picture of the Node-Red Flow" width="750"/>
+  <img src="pictures/ZigBee2MQTT-Aquara-Sensor-Flow-V1.1" alt="Picture of the Node-Red Flow V1.1" width="750"/>
 </p>  
 
 ## Features
